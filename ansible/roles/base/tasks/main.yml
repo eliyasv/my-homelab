@@ -1,5 +1,11 @@
 ---
 # tasks file for roles/base
+- name: Wait for network to be up
+  ansible.builtin.wait_for:
+    host: 8.8.8.8
+    port: 53
+    timeout: 60
+
 - name: Update system
   apt:
     update_cache: yes

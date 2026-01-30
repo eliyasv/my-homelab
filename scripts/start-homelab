@@ -6,7 +6,7 @@ echo "Starting homelab..."
 sudo systemctl start docker
 sudo systemctl start k3s
 
-cd "$HOME/homelab-ansible"
+cd "$HOME/devops-homelab/ansible"
 ansible-playbook -i inventory/hosts.ini site.yml --ask-become-pass
 
 echo "Homelab started"

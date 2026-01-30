@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+echo "Homelab status"
+echo "----------------"
+
+echo
+echo "Docker service:"
+systemctl status docker --no-pager || true
+
+echo
+echo "Running containers:"
+docker ps || true
+
+echo "k3s:"
+systemctl is-active k3s || true
+
+echo "Kubernetes:"
+kubectl get nodes 2>/dev/null || echo "k3s not running"
