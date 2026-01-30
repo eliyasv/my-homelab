@@ -1,0 +1,17 @@
+---
+- name: Install MetalLB manifests
+  command: >
+    kubectl apply -f
+    https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+
+- name: Wait for MetalLB pods
+  command: >
+    kubectl wait --namespace metallb-system
+    --for=condition=Ready pod
+    --all
+    --timeout=120s
+
+- name: Apply MetalLB Kubernetes config
+  command: kubectl apply -f ../k8s/metallb/
+  args:
+    chdir: "{{ playbook_dir }}"
