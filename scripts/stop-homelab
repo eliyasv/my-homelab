@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+echo "Stopping homelab..."
+
+# Stop all running containers (ignore errors if none exist)
+kubectl delete pods --all -A 2>/dev/null || true
+docker stop $(docker ps -q) 2>/dev/null || true
+
+# Stop Docker service
+sudo systemctl stop k3s
+sudo systemctl stop docker
+
+echo "Homelab stopped"
+

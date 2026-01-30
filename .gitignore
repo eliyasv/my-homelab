@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+
+# SSH / keys
+.ssh/
+*.key
+*.pem
+
+# Kubernetes
+.kube/
+kubeconfig
+*.kubeconfig
+
+# Ansible
+*.retry
+
+# Secrets
+.env
+*.env
+
+# Logs
+*.log
