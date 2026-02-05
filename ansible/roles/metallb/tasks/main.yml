@@ -11,7 +11,3 @@
     --all
     --timeout=120s
 
-- name: Apply MetalLB Kubernetes config
-  command: kubectl apply -f ../k8s/metallb/
-  args:
-    chdir: "{{ playbook_dir }}"
