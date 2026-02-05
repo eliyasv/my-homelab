@@ -2,7 +2,8 @@
 
 This repo is my **personal DevOps homelab** built on a spare laptop.
 
-I built this mainly to practice DevOps the hard way - not by following cloud tutorials, but by actually breaking things, debugging them, and understanding why they work the way they do.
+This is a rebuildable, on-demand bare-metal DevOps lab to exercise platform design decisions without cloud abstractions. Ansible is used only for immutable host and cluster bootstrap, after which Argo CD owns all Kubernetes state via GitOps.
+The stack deliberately uses k3s, Traefik, and MetalLB to surface failure modes that cloud providers typically abstract away. This lab prioritizes rebuildability over uptime and reconciliation over manual intervention. It is expected to be stopped, broken, and rebuilt.
 
 The lab is **on-demand**. I don’t keep it running all the time. I start it when I want to practice, and shut it down when I’m done.
 
@@ -26,10 +27,10 @@ The lab is **on-demand**. I don’t keep it running all the time. I start it whe
 - **Kubernetes:** k3s (single node)
 - **Ingress:** Traefik
 - **LoadBalancer:** MetalLB (L2 mode)
+- **GitOps:** Argo CD
 
 Planned:
 - GitHub Actions (CI)
-- Argo CD (GitOps)
 - cert-manager (HTTPS)
 
 ---
@@ -59,6 +60,10 @@ Stops k3s and Docker. MetalLB releases the IP cleanly.
 - Traefik ingress working
 
 - MetalLB assigning real IPs
+
+- Argo CD accessible behind Traefik
+
+- Apps and infra managed via GitOps
 
 - Services reachable via hostname
 
@@ -182,5 +187,33 @@ Here are some of the real issues I hit while building it.
 - Needed an IP pool that wouldn’t conflict with DHCP
 - Chose a small, safe range
 - Verified ARP-based L2 mode works fine on Wi-Fi
+
+---
+
+### MetalLB IP assigned but unreachable
+- MetalLB showed an IP, but nothing responded
+- Root cause - no Service of type LoadBalancer was using it
+- Fixed by patching Traefik Service to LoadBalancer
+
+---
+
+### Traefik returning 404 despite working networking
+- Requests reached Traefik but returned 404
+- Traefik ignored the Ingress
+- Fixed by explicitly setting ingressClassName: traefik
+
+---
+
+### Infinite redirect loop accessing Argo CD
+- Browser showed ERR_TOO_MANY_REDIRECTS
+- TLS was terminated twice- Traefik + Argo CD
+- Fixed by running Argo CD behind a reverse proxy (server.insecure=true) (serves http)
+
+---
+
+### 502 Bad Gateway after fixing redirects
+- Traefik forwarded HTTPS to an HTTP backend
+- Protocol mismatch caused 502
+- Fixed by explicitly telling Traefik to use HTTP for the backend
 
 ---
