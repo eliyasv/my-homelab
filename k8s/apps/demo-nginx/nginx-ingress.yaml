@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx
-  namespace: demo
+  namespace: apps
   annotations:
     kubernetes.io/ingress.class: traefik
 spec:

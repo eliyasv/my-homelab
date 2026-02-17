@@ -6,6 +6,13 @@
     port: 53
     timeout: 60
 
+- name: Wait for apt lock
+  shell: |
+    while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+      sleep 5
+    done
+  changed_when: false
+      
 - name: Update system
   apt:
     update_cache: yes
