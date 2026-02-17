@@ -1,0 +1,4 @@
+resources:
+  - default-deny-apps.yaml
+  - allow-traefik.yaml
+
