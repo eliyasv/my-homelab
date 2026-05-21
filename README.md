@@ -28,10 +28,8 @@ The lab is **on-demand**. I don’t keep it running all the time. I start it whe
 - **Ingress:** Traefik
 - **LoadBalancer:** MetalLB (L2 mode)
 - **GitOps:** Argo CD
-
-Planned:
-- GitHub Actions (CI)
-- cert-manager (HTTPS)
+- GitHub Actions (CI) - Implemented (ARC)
+- cert-manager (HTTPS) - Implemented
 
 ---
 

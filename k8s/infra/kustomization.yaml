@@ -1,3 +1,5 @@
 resources:
   - network-policies
+  - cert-manager
+  - arc
 

@@ -1,0 +1,3 @@
+resources:
+  - arc-controller.yaml
+  - arc-runner-set.yaml
